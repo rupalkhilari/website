@@ -1,0 +1,42 @@
+{% load i18n future pages_tags %}
+{% load filters %}
+{% spaceless %}
+{% if page_branch_in_menu %}
+
+<ul>
+<center><strong>
+  {% for page in page_branch %}
+      <li class="projects-main">
+        <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+  {% endfor %}
+  </strong>
+<center>
+</ul>
+
+  <!-- aggregation of all the pages under the categories -->
+  {% get_project_list as my_project_list %}
+  <!-- {% for sub_page in my_some_list %}
+    {{ sub.meta_title }} one 
+  {% endfor %}-->
+  <ul class="nav nav-list navlist-menu-level-{{ branch_level }}">
+  {% for sub_page in my_project_list %}
+    {% make_html_id sub_page as some_id %}
+      <div class="col-md-4 portfolio-item">
+        <a href="{{ sub_page.get_absolute_url }}">
+            <img class="img-responsive img-thumbnail" src="{{ STATIC_URL|add:'img/posts/thumbnails/'|add:some_id |add:'.jpg'}}" onerror="this.src='http://placehold.it/700x400'" alt="{{ sub_page.title }}">
+        </a>
+        <h3>
+            <a href="{{ sub_page.get_absolute_url }}">{{ sub_page.title }}</a>
+        </h3>
+        <p>{{ sub_page.description }}
+         <a href="{{ sub_page.get_absolute_url }}">{% trans " Read more.." %}</a>
+         </p>
+
+    {# wrap the next line with 'if page.is_current_or_ascendant' #}
+    {# to only show child pages in the menu for the current page #}
+    {# {% if page.has_children_in_menu %}{% page_menu page %}{% endif %} #}
+    </div>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endspaceless %}

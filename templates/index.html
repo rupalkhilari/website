@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Home" %}{% endblock %}
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Home" %}</li>
+{% endblock %}
+
+{% block main %}
+{% blocktrans %}
+<h2 align="center"><strong>Hi !</strong></h2>
+<div class="photo-circle col-md-3">
+<img class="img-circle img-responsive img-thumbnail" src="{{STATIC_URL}}img/site-images/Rupal_Khilari_website.jpg" alt="Rupal K">
+</div>
+<p>
+<div class="col-fluid">
+
+<p><br>
+I am a software developer with five years of professional experience. I spent a majority of my professional career working as a developer on a global animation and visual effects pipeline at <a href="http://www.rhythm.com/" target="_blank"> Rhythm and Hues Studios</a>, a VFX studio that created some award-winning <a href="https://www.youtube.com/watch?v=OH5Pc8Gd1lo" target="_blank">creative work</a> and <a href="http://www.cartoonbrew.com/award-season-focus/a-look-at-rhythm-hues-oscar-winning-technology-voodoo-96677.html">technology</a>. </p>
+<p>
+I recently gradated with a Masters in Computer Science from San Francisco State University. I am happy to have <a href="https://www.facebook.com/135424599822899/photos/rpp.135424599822899/1510546618977350/?type=3&theater" target="_blank">received recognition</a> at school. While a student, I interned as a software developer in the Life Sciences team at Autodesk Research, San Francisco. 
+
+I am passionate about programming, graphics, art and learning new skills. 
+
+<p>Professionally, my areas of interest include (but are not limited to) software developement, <abbr title="Computer Graphics">CG</abbr> production pipeline development, image processing, <abbr title="Human Computer Interaction">HCI</abbr> and virtual reality. I otherwise enjoy drawing and playing the piano in my spare time.
+</p>
+<p>
+Given below is a summary of my recent academic work:
+<ul style="list-style-type:none">
+	<li><b>Publications:</b></li>
+	<ul style="list-style-type:disc">
+		<li>Iris tracking and blink detection for human-computer interaction using a low resolution webcam (Link <a href="http://dl.acm.org/citation.cfm?id=1924620" target="_blank">here</a>)</li>
+	</ul><br>
+	<li><b>Summary of Coursework:</b></li>
+	<ul style="list-style-type:disc">
+		<li>Advanced Operating Systems</li>
+		<li>Analysis of Algorithms II</li>
+		<li>Biomedical Imaging</li>
+		<li>Multiplayer game development</li>
+		<li>Cloud and Distributed Computing</li>
+		<li>Pattern Analysis and Machine Intelligence (PAMI)</li>
+		<li>Software Engineering</li>
+		<li>Independent Study</li>
+		<li>Applied Research Project</li>
+	</ul>
+	<br>
+</ul>
+</p>
+<p>
+The primary purpose of this website is to document some of <a href="/projects/">my projects</a> and to share some lessons I learn along the way. I hope you find some useful and interesting content around here !
+</p>
+</div>
+</p>
+{% endblocktrans %}
+{% endblock %}

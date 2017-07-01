@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico" />
+<title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+<link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+{% ifinstalled mezzanine.blog %}
+<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+{% endifinstalled %}
+
+{% compress css %}
+<link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+<link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+<link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
+<!-- <link rel="stylesheet" href="{% static "css/animate.min.css" %}">
+<link rel="stylesheet" href="{% static "css/bootstrap-dropdownhover.min.css" %}"> -->
+<link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}">
+<link rel="stylesheet" href="{% static "css/animsition.min.css" %}">
+
+<link rel="stylesheet" href="{% static "css/custom.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/rtl.css" %}">
+{% endif %}
+{% ifinstalled cartridge.shop %}
+<link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+{% endif %}
+{% endifinstalled %}
+{% block extra_css %}{% endblock %}
+{% endcompress %}
+
+{% compress js %}
+<script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
+<script src="{% static "js/bootstrap-extras.js" %}"></script>
+<script src="{% static "js/animsition.min.js" %}"></script>
+<!-- <script src="{% static "js/bootstrap-dropdownhover.min.js" %}"></script> -->
+<script src="{% static "js/custom.js" %}"></script>
+{% block extra_js %}{% endblock %}
+{% endcompress %}
+
+<!--[if lt IE 9]>
+<script src="{% static "js/html5shiv.js" %}"></script>
+<script src="{% static "js/respond.min.js" %}"></script>
+<![endif]-->
+
+{% block extra_head %}{% endblock %}
+</head>
+<body id="{% block body_id %}body{% endblock %}">
+<div id="cover">
+    <img id="img-loader" src="{{STATIC_URL}}img/site-icons/loader.gif" alt="Loading"/> 
+</div>
+<div class="js-animsition animsition" data-animsition-in-class="fade-in" data-animsition-out-class="fade-out" style="animation-duration: 800ms; opacity: 1;">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="container">
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">{% trans "Toggle Navigation" %}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
+    {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+</div>
+<div class="navbar-collapse collapse">
+    {% search_form "all" %}
+    {% page_menu "pages/menus/dropdown.html" %}
+</div>
+</div>
+</div>
+
+<!-- Image header goes here -->
+<section id="header_section" style="width: 100%; height:350px; background-size:cover; margin: 0 auto;">
+
+{% block main_banner %}
+<div id="section_banner" class="jumbotron img-banner">
+   <h1 id="section_heading" align="center" class="vertical-center"><strong id="section_strong_text" >  {{ page.title|upper }} </strong> </h1>
+</div>
+{% endblock %}
+
+<div class="container">
+{% nevercache %}
+{% if messages %}
+<div class="messages">
+{% for message in messages %}
+<div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endnevercache %}
+
+
+</section>
+
+<section style="width:100%;background-size:cover; margin: 0 0; padding: 6px 0px; padding-top: 10px;background-color: #ecf0f1;vertical-align: center"> 
+<div class="container">
+<ul class="breadcrumb">
+{% spaceless %}
+{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+{% endspaceless %}
+</ul>
+</div>
+</section>
+
+
+<div class="container">
+<div class="row">
+<!--
+<div class="col-md-2 left">
+    {% block left_panel %}
+     <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div> 
+    {% endblock %}
+</div>
+-->
+ <!-- style="border-right:1px ridge #DDD; height:100%" -->
+<div class="col-md-9 left" style="padding-top: 25px;">
+    {% block main %}{% endblock %}
+    {% block page_footer %}{% endblock %}
+</div>
+
+
+
+<div class="col-md-3 right" style="padding-top: 5px">
+{% load blog_tags keyword_tags i18n %}
+{% blog_recent_posts 3 as recent_posts %}
+{% if recent_posts %}
+<h3>{% trans "Recent posts" %}</h3>
+<ul style="list-style-type:none"><li>{% trans "Blog" %} </li>
+<ul class="unstyled recent-posts" style="list-style-type:disc">
+{% for recent_post in recent_posts %}
+    <li><h5>
+        <a href="{{ recent_post.get_absolute_url }}">
+            {{ recent_post.title }}
+        </a> <small> ({{ recent_post.publish_date|timesince }} {% trans "ago" %}) </small></h5>
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+<br>
+<li>{% trans "Projects" %} </li>
+{% load filters %}
+{% get_recent_projects 3 as recent_projects %}
+{% if recent_projects %}
+<ul class="unstyled recent-posts" style="list-style-type:disc">
+{% for recent_project in recent_projects %}
+    <li> <h5>
+        <a href="{{ recent_project.get_absolute_url }}">
+            {{ recent_project.title }}
+        </a> <small> ({{ recent_project.publish_date|timesince }} {% trans "ago" %}) </small></h5>
+    </li>
+{% endfor %}
+
+</ul>
+{% endif %}
+</ul>
+</div>
+<!--  tWitter panel 
+<div class="col-md-3 right">
+    {% nevercache %}
+    {% include "includes/user_panel.html" %}
+    {% endnevercache %}
+    <div class="panel panel-default">
+    <div class="panel-body">
+    {% block right_panel %}
+    {% ifinstalled mezzanine.twitter %}
+    {% include "twitter/tweets.html" %}
+    {% endifinstalled %}
+    {% endblock %}
+    </div>
+    </div>
+</div>
+-->
+</div>
+</div>
+
+
+
+<footer>
+<div class="container">
+{% page_menu "pages/menus/footer.html" %}
+
+<div class="row">
+<p class="text-center">
+<!-- all the social links here -->
+    <a href="https://www.linkedin.com/in/rupalkhilari" title="LinkedIn"><i class="fa fa-linkedin fa-lg"></i></a>
+    <span class="separator"></span>
+    <a href="http://github.com/rupalkhilari" title="Github"><i class="fa fa-github fa-lg"></i></a>
+    <span class="separator"></span>
+    <a href="https://plus.google.com/105116444640825455078" title="Google+"><i class="fa fa-google-plus fa-lg"></i></a>
+</p>
+<p class="site-info text-center">
+    {% trans "Powered by" %}
+    <a href="http://mezzanine.jupo.org" target="_blank">Mezzanine</a>,{% ifinstalled cartridge.shop %}
+    <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
+    <a href="http://www.djangoproject.com">Django</a>
+    {% trans "and" %}
+    <a href="https://www.heroku.com/">Heroku</a>
+    <span class="separator">|</span>
+    {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
+   <!-- <span class="separator">|</span>
+    {% trans "Domain name by" %}
+    <a target="_blank" href="http://www.freedomain.co.nr">Free Domain .co.nr</a> -->
+    {% ifinstalled mezzanine.mobile %}
+    <span class="separator">|</span>
+    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+    {% endifinstalled %}
+</p>
+
+</div>
+</div>
+</footer>
+
+{% include "includes/footer_scripts.html" %}
+</div>
+</body>
+</html>
